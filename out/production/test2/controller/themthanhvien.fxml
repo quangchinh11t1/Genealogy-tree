@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane prefHeight="451.0" prefWidth="738.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ControllerForThemTV">
+   <children>
+      <Text layoutX="171.0" layoutY="40.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Thêm thành viên" wrappingWidth="257.6708984375">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Text>
+      <TextField fx:id="maTV" layoutX="527.0" layoutY="70.0" prefHeight="31.0" prefWidth="192.0" promptText="mã thành viên" />
+      <TextField fx:id="name" layoutX="175.0" layoutY="127.0" prefHeight="31.0" prefWidth="192.0" promptText="họ và tên" />
+      <TextField fx:id="date" layoutX="179.0" layoutY="185.0" prefHeight="31.0" prefWidth="192.0" promptText="năm sinh" />
+      <TextField fx:id="maDoi" layoutX="527.0" layoutY="127.0" prefHeight="31.0" prefWidth="192.0" promptText="đời thứ (mã đời)" />
+      <TextField fx:id="diaChi" layoutX="179.0" layoutY="240.0" prefHeight="31.0" prefWidth="192.0" promptText="địa chỉ thướng trú" />
+      <TextField fx:id="maCha" layoutX="527.0" layoutY="291.0" prefHeight="31.0" prefWidth="192.0" promptText="mã thành viên của cha" />
+      <Button layoutX="260.0" layoutY="374.0" mnemonicParsing="false" onAction="#themTV" prefHeight="31.0" prefWidth="106.0" text="thêm" />
+      <TextField fx:id="gioiTinh" layoutX="527.0" layoutY="185.0" prefHeight="31.0" prefWidth="192.0" promptText="giới tính" />
+      <TextField fx:id="maVkCk" layoutX="527.0" layoutY="240.0" prefHeight="31.0" prefWidth="192.0" promptText="mã vợ chồng" />
+      <TextField fx:id="ngheNghiep" layoutX="179.0" layoutY="291.0" prefHeight="31.0" prefWidth="192.0" promptText="nghề nghiệp" />
+      <TextField fx:id="id" layoutX="179.0" layoutY="73.0" promptText="Nhập lại tài khoản" />
+      <Text layoutX="406.0" layoutY="92.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Mã thành viên" wrappingWidth="160.6708984375">
+         <font>
+            <Font size="17.0" />
+         </font>
+      </Text>
+      <Text layoutX="32.0" layoutY="92.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nhập lại tài khoản" wrappingWidth="160.6708984375">
+         <font>
+            <Font size="17.0" />
+         </font>
+      </Text>
+      <Text layoutX="32.0" layoutY="149.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Họ và tên" wrappingWidth="160.6708984375">
+         <font>
+            <Font size="17.0" />
+         </font>
+      </Text>
+      <Text layoutX="406.0" layoutY="149.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Mã đời" wrappingWidth="160.6708984375">
+         <font>
+            <Font size="17.0" />
+         </font>
+      </Text>
+      <Text layoutX="406.0" layoutY="209.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Giới tính" wrappingWidth="160.6708984375">
+         <font>
+            <Font size="17.0" />
+         </font>
+      </Text>
+      <Text layoutX="406.0" layoutY="262.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Mã vợ chồng" wrappingWidth="160.6708984375">
+         <font>
+            <Font size="17.0" />
+         </font>
+      </Text>
+      <Text layoutX="406.0" layoutY="326.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Mã cha" wrappingWidth="160.6708984375">
+         <font>
+            <Font size="17.0" />
+         </font>
+      </Text>
+      <Text layoutX="25.0" layoutY="207.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Năm sinh" wrappingWidth="160.6708984375">
+         <font>
+            <Font size="17.0" />
+         </font>
+      </Text>
+      <Text layoutX="25.0" layoutY="262.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Địa chỉ thường trú" wrappingWidth="160.6708984375">
+         <font>
+            <Font size="17.0" />
+         </font>
+      </Text>
+      <Text layoutX="25.0" layoutY="313.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nghề nghiệp" wrappingWidth="160.6708984375">
+         <font>
+            <Font size="17.0" />
+         </font>
+      </Text>
+      <Button layoutX="486.0" layoutY="368.0" mnemonicParsing="false" onAction="#goBack" prefHeight="31.0" prefWidth="106.0" text="quay lại" />
+   </children>
+</AnchorPane>

@@ -1,0 +1,25 @@
+GenealogyTree tree = new GenealogyTree();
+        TreeItem<Member> root =new TreeItem<>(tree.getTree().get(0));
+        root.setExpanded(true);
+        for(int i=1; i<tree.getTree().size(); i++){
+            root.getChildren().add(new TreeItem<>(tree.getTree().get(i)));
+        }
+
+
+        TreeTableColumn<Member, String> nameColumn = new TreeTableColumn<>("Name");
+        nameColumn.setPrefWidth(150);
+        nameColumn.setCellValueFactory(
+                (TreeTableColumn.CellDataFeatures<Member, String> param) ->
+                        new ReadOnlyStringWrapper(param.getValue().getValue().getFullName())
+        );
+
+        TreeTableView<Member> treeTableView = new TreeTableView<>(root);
+        treeTableView.getColumns().setAll(nameColumn);
+
+        /**
+         * lựa chọn được nhiều ô
+         */
+        treeTableView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+        treeTableView.getSelectionModel().setCellSelectionEnabled(true);
+
+        return treeTableView;
