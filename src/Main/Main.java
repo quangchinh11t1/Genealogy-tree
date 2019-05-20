@@ -6,12 +6,10 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-import static java.lang.Thread.sleep;
-
 public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception{
-        Parent root = FXMLLoader.load(getClass().getResource("../controller/khoidong.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("../controller/khoidong.fxml")); //../controller/khoidong.fxml
         primaryStage.setTitle("Cây phả hệ");
         primaryStage.setScene(new Scene(root, 550, 400));
         primaryStage.show();

@@ -1,25 +1,64 @@
-GenealogyTree tree = new GenealogyTree();
-        TreeItem<Member> root =new TreeItem<>(tree.getTree().get(0));
-        root.setExpanded(true);
-        for(int i=1; i<tree.getTree().size(); i++){
-            root.getChildren().add(new TreeItem<>(tree.getTree().get(i)));
+String kq = new String();
+        //checkAnces(m1,m2);
+        if(m1.getMaCha() == null && m2.getMaCha() == null){
+            return callRelationship(m1,getMember(m2.getMaVkCk()));
+        }
+        else{
+            if(checkAnces(m1,m2) || checkAnces(m2,m1)){
+                System.out.println("ancestor");
+                int stt = m1.getDoi() - m2.getDoi() ;
+                if(stt >= 0) {
+                    // check ngoại tộc
+                    if(m2.getMaCha() == null){
+                        System.out.println("ngoai toc");
+                        String[] tmp = ancesRelation(m1,ancestor(m1));
+                        kq = tmp[stt-1];
+                        switch (kq){
+                            case "bố-con":
+                                kq = ancesRelationArray[1];
+                                break;
+                            case "mẹ-con":
+                                kq = ancesRelationArray[0];
+                                break;
+                            case "ông nội-cháu":
+                                kq = ancesRelationArray[3];
+                                break;
+                            case "bà nội-cháu":
+                                kq = ancesRelationArray[2];
+                                break;
+                            case "ông ngoại-cháu":
+                                kq = ancesRelationArray[5];
+                                break;
+                            case "bà ngoại-cháu":
+                                kq = ancesRelationArray[4];
+                                break;
+                        }
+                        setRelation(kq);
+                        return kq;
+                    }
+                    else{
+                        System.out.println("thuoc pha he");
+                        String[] tmp = ancesRelation(m1,ancestor(m1));
+                        kq = tmp[stt-1];
+                        System.out.println(kq);
+                        setRelation(kq);
+                        return kq;
+                    }
+                }
+                else {
+                    System.out.println("da di qua");
+                    callRelationship(m2,m1);
+//                relation(m2,m1);
+                }
+            }
+            else {
+                kq = relation(m1,m2);
+                setRelation(kq);
+                return kq;
+            }
         }
 
-
-        TreeTableColumn<Member, String> nameColumn = new TreeTableColumn<>("Name");
-        nameColumn.setPrefWidth(150);
-        nameColumn.setCellValueFactory(
-                (TreeTableColumn.CellDataFeatures<Member, String> param) ->
-                        new ReadOnlyStringWrapper(param.getValue().getValue().getFullName())
-        );
-
-        TreeTableView<Member> treeTableView = new TreeTableView<>(root);
-        treeTableView.getColumns().setAll(nameColumn);
-
-        /**
-         * lựa chọn được nhiều ô
-         */
-        treeTableView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-        treeTableView.getSelectionModel().setCellSelectionEnabled(true);
-
-        return treeTableView;
+        //setRelation(kq);
+        System.out.println("kq cuoi: "+ kq);
+        //return kq;
+        return null;

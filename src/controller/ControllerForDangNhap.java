@@ -46,7 +46,6 @@ public class ControllerForDangNhap {
             rs = statement.executeQuery(sql);
             if(rs.next()){
                 setLogin(id.getText());
-                System.out.println("*******ten dang nhap la        " + getLogin());
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle("THÔNG BÁO");
                 alert.setHeaderText("ĐĂNG NHẬP THÀNH CÔNG!");

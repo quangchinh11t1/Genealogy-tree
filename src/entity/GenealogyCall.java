@@ -8,11 +8,11 @@ public interface GenealogyCall {
             "bác-cháu", "chú-cháu", "cô-cháu", "thím-cháu",
             "cậu-cháu", "dì-cháu", "mợ-cháu",
             "ông-cháu", "bà-cháu",
-            "cụ-chắt"
+            "cụ-chắt", "vợ-chồng"
     };
     final String[] ancesRelationArray = {
         "bố-con", "mẹ-con",
-        "ông nội-cháu", "bà nội-cháu", "ông ngoại-cháu", "cụ ngoại-cháu",
+        "ông nội-cháu", "bà nội-cháu", "ông ngoại-cháu", "bà ngoại-cháu",
         "cụ nội-chắt", "cụ ngoại-chắt"
     };
 
@@ -34,7 +34,7 @@ public interface GenealogyCall {
     /**
      *check quan hệ huyết thống
      */
-    public boolean checkAnces(Member m1, Member m2);
+    public Boolean checkAnces(Member m1, Member m2);
 
 }
 

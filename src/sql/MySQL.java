@@ -65,7 +65,7 @@ public class MySQL {
         ResultSet result = statement.executeQuery();
         ArrayList<String> array = new ArrayList<String>();
         while (result.next()){
-         //   System.out.println(result.toString());
+            //   System.out.println(result.toString());
             System.out.println(result.getString("hotenTV"));
             array.add(result.getString("hotenTV"));
         }

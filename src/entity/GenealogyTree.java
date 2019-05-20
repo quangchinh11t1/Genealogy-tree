@@ -8,11 +8,11 @@ package entity;
 import controller.ControllerForDangNhap;
 import sql.MySQL;
 
-import java.awt.*;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 
 import static java.lang.Math.abs;
+import static java.lang.Math.pow;
 
 public class GenealogyTree implements GenealogyCall {
     private ArrayList<Member> tree = new ArrayList<Member>();
@@ -67,20 +67,22 @@ public class GenealogyTree implements GenealogyCall {
             tree.add(dataMember);
         }
         for (int i=0; i<tree.size(); i++){
-          //  System.out.println(tree.get(i).getFullName() + " " + tree.get(i).isMen());
+            //  System.out.println(tree.get(i).getFullName() + " " + tree.get(i).isMen());
         }
         System.out.println(tree.size());
     }
 
     public Member getMember(Integer maTV){
-        Member member = new Member() ;
+        Member member = new Member();
         for (int i=0; i<tree.size(); i++){
-            if(maTV ==  tree.get(i).getMaTV())
+            //System.out.println(tree.get(i).getMaTV());
+            if(maTV ==  tree.get(i).getMaTV()){
                 member = tree.get(i);
+            }
         }
+        System.out.println(member.getFullName());
         return member;
     }
-
     void addNode(){
 
     }
@@ -98,6 +100,7 @@ public class GenealogyTree implements GenealogyCall {
      */
     public String reverseRelation(String relation){
         String reverseTmp = new String() ;
+        System.out.println("this is reverse: " + relation);
         String [] words = relation.split("-");
         reverseTmp = words[1] + "-" + words[0];
         //System.out.println(reverseTmp);
@@ -141,6 +144,7 @@ public class GenealogyTree implements GenealogyCall {
         /**
          * tim root chung cua m1 vs m2
          * tìm nhánh lớn
+         * gọi tên luôn ngoại tộc
          */
         if(hieuDoi >=0){
             /**
@@ -156,15 +160,20 @@ public class GenealogyTree implements GenealogyCall {
             if(m1.getMaCha() == null || m2.getMaCha() == null){
                 Integer lifePartner ;
                 String switchKey ;
+                if(m1.getMaTV() == m2.getMaVkCk() || m1.getMaVkCk() == m2.getMaTV())
+                    return relation = relationArray[12];
                 if(m1.getMaCha() == null){
                     lifePartner = m1.getMaVkCk();
                     switchKey = callRelationship(getMember(lifePartner),m2);
                 }
                 else{
+                    System.out.println("m2.getmacha null");
                     lifePartner = m2.getMaVkCk();
-                    switchKey = callRelationship(getMember(lifePartner),m1);
+                    System.out.println(getMember(lifePartner).getFullName());
+                    //switchKey = callRelationship(getMember(lifePartner),m1);
+                    switchKey = callRelationship(m1, getMember(lifePartner));
                 }
-                switch (switchKey){
+                switch (switchKey){     // chỉ ngoại tộc
                     case "bác-cháu":
                         relation = relationArray[2];
                         break;
@@ -179,11 +188,44 @@ public class GenealogyTree implements GenealogyCall {
                         break;
                     case "cô-cháu":
                         relation = relationArray[3];
+                        break;
+                    case "anh-em":
+                        relation = "anh-em";
+                        break;
+                    case "chị-em":
+                        relation = "chị-em";
+                        break;
+                    case "em-chị":
+                        relation = "em-chị";
+                        break;
+                    case "em-anh":
+                        relation = "em-anh";
+                        break;
+                    case "ông nội-cháu":
+                        relation = ancesRelationArray[3];
+                        break;
+                    case "bà-nội-cháu":
+                        relation = ancesRelationArray[2];
+                        break;
+                    case "ông ngoại-cháu":
+                        relation = ancesRelationArray[5];
+                        break;
+                    case "bà ngoại-cháu":
+                        relation = ancesRelationArray[4];
+                        break;
+                    case "ông-cháu":
+                        relation = "bà-cháu";
+                        break;
+                    case "bà-cháu":
+                        relation = "ông-cháu";
+                        break;
+                    default:
+                        relation = "khong biet";
                 }
                 return relation;
             }
             // m1 là gốc cây
-            if((m1.getMaCha().equals("")) ){
+            if((m1.getMaCha().equals("-1")) ){
                 rootDoi = m1.getMaTV();
                 flagFindRoot = true;
                 isElderBranch = true;
@@ -221,9 +263,14 @@ public class GenealogyTree implements GenealogyCall {
                 if(ancestorM1[rootIndexAncestorM1].getNgaySinh() < ancestorM2[rootIndexAncestorM2].getNgaySinh())
                     isElderBranch = true;
             }
+
             //m1 là con của rootDoi or m1 là gốc cây
             if(-1 == rootIndexAncestorM1 || null == m1.getMaCha()){
-                if(m1.getNgaySinh() < ancestorM2[rootIndexAncestorM2].getNgaySinh())
+                if(-1 == rootIndexAncestorM1 && -1 == rootIndexAncestorM2){
+                    if(m1.getNgaySinh() < m2.getNgaySinh())
+                        isElderBranch = true;
+                }
+                else if(m1.getNgaySinh() < ancestorM2[rootIndexAncestorM2].getNgaySinh())
                     isElderBranch = true;
             }
             else {
@@ -284,14 +331,21 @@ public class GenealogyTree implements GenealogyCall {
                 break;
             case 2:
                 System.out.println("case 2");
+                System.out.println("day roi");
+                System.out.println(m1.getMaTV());
                 if(m1.isMen())  // ông hay bà?
+                {
                     relation = relationArray[9];
+                    System.out.println(relation);
+                }
                 else
                     relation = relationArray[10];
+                System.out.println(relation);
                 break;
             case 3:             // cụ
                 System.out.println("case 3");
                 relation = relationArray[11];
+                break;
         }
 
         if(hieuDoi < 0)
@@ -306,20 +360,34 @@ public class GenealogyTree implements GenealogyCall {
     }
 
     @Override
-    public boolean checkAnces(Member m1, Member m2) {
+    public Boolean checkAnces(Member m1, Member m2) {
         boolean kq = false;
         int hieuDoi = m2.getDoi() - m1.getDoi();
+        if(m1.getMaVkCk() == m2.getMaTV())
+            return false;
         if(hieuDoi >=0){
-            Member[] tmp = ancestor(m2);
-            for (int i=0; i<tmp.length; i++){
-                //System.out.println(tmp[i].getMaTV()+"-"+ tmp[i].getMaVkCk() + " " + m1.getMaTV());
-                if(m1.getMaTV() == tmp[i].getMaTV() || m1.getMaTV() == tmp[i].getMaVkCk()) {
-                    kq = true;
+            if(m2.getMaCha() != null){
+                Member[] tmp = ancestor(m2);
+                for (int i=0; i<tmp.length; i++){
+                    System.out.println(tmp[i].getMaTV()+"-"+ tmp[i].getMaVkCk() + " " + m1.getMaTV());
+                    System.out.println(tmp[i].getMaTV()+"-"+ tmp[i].getMaVkCk() + " " + m1.getMaVkCk());
+                    //if(tmp[i].getMaVkCk() == m1.getMaTV())
+                    if(m1.getMaTV() == tmp[i].getMaTV() || m1.getMaTV() == tmp[i].getMaVkCk()
+                            ||m1.getMaVkCk() == tmp[i].getMaTV() || m1.getMaVkCk() == tmp[i].getMaVkCk() ) {
+                        System.out.println("check ancess true");
+                        kq = true;
+                        return kq;
+                    }
                 }
             }
+            else{
+                System.out.println("ca 2 null");
+                return checkAnces(m1, getMember(m2.getMaVkCk()));
+            }
+
         }
         else {
-            checkAnces(m2, m1);
+            return checkAnces(m2, m1);
         }
         System.out.println("check ances: " + kq);
         return kq;
@@ -329,54 +397,67 @@ public class GenealogyTree implements GenealogyCall {
     public String callRelationship(Member m1, Member m2) {
         String kq = new String();
         //checkAnces(m1,m2);
-        if(checkAnces(m1,m2) || checkAnces(m2,m1)){
-            System.out.println("ancestor");
-            int stt = m1.getDoi() - m2.getDoi() ;
-            if(stt >= 0){
-                if(m2.getMaCha() == null){ // check ngoại tộc
-                    System.out.println("ngoai toc");
-                    String[] tmp = ancesRelation(m1,ancestor(m1));
-                    kq = tmp[stt-1];
-                    switch (kq){
-                        case "bố-con":
-                            kq = ancesRelationArray[1];
-                            break;
-                        case "mẹ-con":
-                            kq = ancesRelationArray[0];
-                            break;
-                        case "ông nội-cháu":
-                            kq = ancesRelationArray[3];
-                            break;
-                        case "bà nội-cháu":
-                            kq = ancesRelationArray[2];
-                            break;
-                        case "ông ngoại-cháu":
-                            kq = ancesRelationArray[5];
-                            break;
-                        case "bà ngoại-cháu":
-                            kq = ancesRelationArray[4];
-                            break;
+        int hieuDoi = m2.getDoi() - m1.getDoi();
+        if(hieuDoi >=0){
+            if(m1.getMaTV() == m2.getMaVkCk()){
+                return relationArray[12];
+            }
+            if(/*null == m1.getMaCha() &&*/ null == m2.getMaCha()){
+                System.out.println("ca 2 null ");
+                return callRelationship(m1, getMember(m2.getMaVkCk()));
+            }
+            else{
+                System.out.println("hello" + checkAnces(m1,m2));
+                if(checkAnces(m1,m2) || checkAnces(m2,m1)){
+                    String[] tmp = ancesRelation(m2, ancestor(m2));
+                    int cs = (int) pow(2,(hieuDoi-1));
+                    System.out.println(cs);
+                    System.out.println(m2.getMaTV());
+                    if(hieuDoi == 1){
+                        if(null == m1.getMaCha())
+                            kq = tmp[hieuDoi];
+                        else
+                            kq = tmp[hieuDoi-1];
                     }
+                    else {
+                        if(null == m1.getMaCha()){
+                            System.out.println("dmm null ");
+                            kq = tmp[cs+1];
+                        }
+                        else
+                            kq = tmp[cs];
+                    }
+                    System.out.println(kq);
+                    return kq;
                 }
                 else{
-                    String[] tmp = ancesRelation(m1,ancestor(m1));
-                    kq = tmp[stt-1];
+                    System.out.println(relation(m1,m2));
+                    return relation(m1,m2);
                 }
-            }
-            else {
-                /*String[] tmp = ancesRelation(m2,ancestor(m2));
-                kq = reverseRelation(tmp[abs(stt)-1]);*/
-                callRelationship(m2,m1);
+
             }
         }
-        else kq = relation(m1,m2);
-        System.out.println(kq);
-        return kq;
+        else{
+            kq = callRelationship(m2,m1);
+            System.out.println(kq);
+            return reverseRelation(callRelationship(m2,m1));
+        }
+
+
+        //setRelation(kq);
+        //System.out.println("kq cuoi: "+ kq);
+        //return kq;
+        //return null;
     }
 
+    public void swap(String m1, String m2){
+        String tmp = m1;
+        m1 = m2;
+        m2 = m1;
+    }
     @Override
     public String[] ancesRelation(Member m1, Member[] ances) {
-        String[] ancesRela = new String[4];
+        String[] ancesRela = new String[8];
         int count = 0;
 
         for(int i=0; i<ances.length; i++){
@@ -387,47 +468,62 @@ public class GenealogyTree implements GenealogyCall {
             switch (count){
                 case 0:
                     System.out.println(ances[count].getFullName()+ " " + ances[count].isMen());
-                    if(ances[count].isMen())    //bố or mẹ
-                        ancesRela[0] = ancesRelationArray[0];
-                    else
-                        ancesRela[0] = ancesRelationArray[1];
+                    ancesRela[0] = ancesRelationArray[0];
+                    ancesRela[1] = ancesRelationArray[1];
+                    if(!ances[count].isMen())
+                        swap(ancesRela[0], ancesRela[1]);
                     break;
                 case 1:
                     //System.out.println(count + " " + ances[count].getFullName());
                     if(null == ances[count].getFullName())
                         break;
                     else {
-                        if(ances[count].isMen()){   // ong
-                            if(ances[0].isMen())  // check noi ngoai
-                                ancesRela[1] = ancesRelationArray[2];
-                            else
-                                ancesRela[1] = ancesRelationArray[4];
+                        if(ances[0].isMen()){
+                            ancesRela[2] = ancesRelationArray[2];
+                            ancesRela[3] = ancesRelationArray[3];
+                            System.out.println("nội 2: " + ancesRela[2]);
+                            System.out.println(ances[count].getMaTV());
+                            if(!ances[count].isMen())
+                                swap(ancesRela[2], ancesRela[3]);
+                            System.out.println("nội 2 after: " + ancesRela[2]);
                         }
                         else {
-                            if(ances[0].isMen())
-                                ancesRela[1] = ancesRelationArray[3];
-                            else
-                                ancesRela[1] = ancesRelationArray[5];
+                            System.out.println("ngoai 2:" );
+                            ancesRela[2] = ancesRelationArray[4];
+                            ancesRela[3] = ancesRelationArray[5];
+                            if(!ances[count].isMen())
+                                swap(ancesRela[4], ancesRela[5]);
                         }
+                        break;
                     }
-                    break;
                 case 2:
                     if(null == ances[count].getFullName())
                         break;
                     else {
-                        if(ances[0].isMen())
-                            ancesRela[2] = ancesRelationArray[6];
+                        if(ances[0].isMen()){
+                            ancesRela[4] = ancesRelationArray[6];
+                        }
                         else
-                            ancesRela[2] = ancesRelationArray[7];
+                            ancesRela[4] = ancesRelationArray[7];
                     }
+                    break;
+                case 3:
+
                     break;
             }
             count++;
         }
         // check ket qua
-        for (int i=0; i<ances.length; i++){
-            //System.out.println(ancesRela[i]);
+        for (int i=0; i<ancesRela.length; i++){
+            System.out.println(i + " " + ancesRela[i]);
         }
         return ancesRela;
+    }
+
+    public void  kq(Member m1, Member m2){
+        //String kq = new String();
+        System.out.println(callRelationship(m1,m2));
+        System.out.println("this is kq" );
+        //return kq;
     }
 }
